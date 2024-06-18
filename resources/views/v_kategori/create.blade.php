@@ -12,8 +12,8 @@
                             <div class="form-group">
                                 <label class="font-weight-bold">Kategori</label>
                                 <input type="text" class="form-control @error('deskripsi') is-invalid @enderror" name="deskripsi" value="{{ old('deskripsi') }}" placeholder="Masukkan kategori barang">
-                            
-                                <!-- error message untuk merk -->
+
+                                <!-- error message untuk deskripsi -->
                                 @error('deskripsi')
                                     <div class="alert alert-danger mt-2">
                                         {{ $message }}

@@ -68,39 +68,49 @@ class KategoriController extends Controller
         //     'kategori' => $request->kategori,
         //     'ketKategori' => $request->ketKategori // Sesuaikan dengan field yang ada di tabel kategori
         // ]);
-        try {
-            DB::beginTransaction(); // <= Starting the transaction
-            // Insert a new order history
-            DB::table('kategori')->insert([
-                'order_id' => $orderID,
-                'status' => 'pending',
-            ]);
-        
-            DB::commit(); // <= Commit the changes
-        } catch (\Exception $e) {
-            report($e);
-            
-            DB::rollBack(); // <= Rollback in case of an exception
-        }
-
+        $request->validate([
+            'deskripsi' => 'required|string|max:255',
+            'kategori' => 'required|in:M,A,BHP,BTHP',
+        ], [
+            'deskripsi.required' => 'Deskripsi kategori harus diisi.',
+            'deskripsi.unique' => 'Kategori dengan nama yang sama sudah ada.',
+            'kategori.required' => 'Kategori harus diisi.',
+            'kategori.in' => 'Kategori harus salah satu dari: Modal, Alat, Bahan Habis Pakai, Bahan Tidak Habis Pakai.',
+        ]);
+    
+        // Mengecek apakah kategori dengan deskripsi yang sama sudah ada
         $existingKategori = Kategori::where('deskripsi', $request->deskripsi)->first();
-
+    
         if ($existingKategori) {
-            // Jika kategori dengan nama yang sama sudah ada, kembalikan error
+            // Jika kategori dengan deskripsi yang sama sudah ada, kembalikan error
             return redirect()->route('kategori.create')->withErrors([
-                'error' => 'Kategori dengan nama yang sama sudah ada.',
+                'deskripsi' => 'Kategori dengan deskripsi yang sama sudah ada.',
             ])->withInput();
         }
-
-        
-        Kategori::create([
-            'deskripsi' => $request->deskripsi,
-            'kategori' => $request->kategori,
-        ]);
-
-
-        // Redirect ke halaman index kategori dengan pesan sukses
-        return redirect()->route('kategori.index')->with('success', 'Data Berhasil Disimpan!');
+    
+        try {
+            DB::beginTransaction();
+    
+            // Memasukkan data baru ke tabel kategori
+            Kategori::create([
+                'deskripsi' => $request->deskripsi,
+                'kategori' => $request->kategori,
+                'ketKategori' => $request->ketKategori // Sesuaikan dengan field yang ada di tabel kategori
+            ]);
+    
+            DB::commit();
+    
+            // Mengarahkan kembali dengan pesan sukses
+            return redirect()->route('kategori.index')->with('success', 'Data Berhasil Disimpan!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            report($e);
+    
+            // Mengarahkan kembali dengan pesan kesalahan umum
+            return redirect()->route('kategori.create')->withErrors([
+                'error' => 'Terjadi kesalahan saat menambahkan kategori. Silakan coba lagi.',
+            ])->withInput();
+        }
     }
 
     
