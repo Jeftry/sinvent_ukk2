@@ -123,7 +123,7 @@ class BarangkeluarController extends Controller
 
         // Kembalikan stok barang yang dihapus
         $barang = Barang::find($barangkeluar->barang_id);
-        $barang->stok += $barangkeluar->qty_keluar;
+        // $barang->stok += $barangkeluar->qty_keluar;
         $barang->save();
 
         // Hapus data barang keluar

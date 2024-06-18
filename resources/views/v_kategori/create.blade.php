@@ -28,25 +28,25 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="kategori" id="kategori" value="M">
                                     <label class="form-check-label" for="kategori">
-                                      M
+                                      Modal
                                     </label>
                                   </div>
                                   <div class="form-check">
                                     <input class="form-check-input" type="radio" name="kategori" id="Kategori" value="A">
                                     <label class="form-check-label" for="kategori">
-                                      A
+                                      Alat
                                     </label>
                                   </div>       
                                   <div class="form-check">
                                         <input class="form-check-input" type="radio" name="kategori" id="kategori" value="BHP">
                                         <label class="form-check-label" for="kategori">
-                                            BHP
+                                            Bahan Habis Pakai
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="kategori" id="kategori" value="BTHP">
                                         <label class="form-check-label" for="kategori">
-                                            BTHP
+                                            Bahan Tidak Habis Pakai
                                         </label>
                                     </div>                         
 
